@@ -5,16 +5,27 @@ Tautan Web: [http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop](http://pbp.cs.ui.ac
 
 ### Cara Implementasi Proyek
 1. **Membuat proyek Django baru**
+
 Untuk menginisiasi sebuah project baru pada Django, kita dapat menjalankan command berikut `django-admin startproject nama_project`. Django akan menghasilkan file dan direktori projek yang diperlukan.
+
 2. **Membuat main app pada proyek django**
+
 Untuk membuat aplikasi main kita dapat menggunakan perintah `python manage.py startapp main`.
+
 3. **Mendefinisikan model pada proyek**
+
 Di dalam direktori main, dapat dibuat model baru pada file `models.py`. Dalam tugas ini, model yang diperlukan adalah Product yang memiliki atribut nama dengan tipe CharField, price dengan tipe IntegerField, dan description dengan tipe TextField.
+
 4. **Menampilkan html berdasarkan data**
+
 Kita dapat membuat fungsi di `views.py` yang akan melakukan rendering template html. Fungsi ini digunakan untuk menyuplai data (dalam hal ini berupa nama dan kelas) ke file template html yang akan dirender.
+
 5. **Melakukan routing pada `urls.py`**
+
 Pada direktori proyek, kita dapat melakukan routing untuk mengarahkan root url ke main app kita.
+
 6. **Melakukan deployment melalui PWS**
+
 Apabila aplikasi sudah cukup baik, kita bisa melakukan deployment di Pacil Web Service agar web kita dapat diakses melalui internet.
 
 ### Django Workflow

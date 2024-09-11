@@ -11,14 +11,23 @@ Untuk membuat aplikasi main kita dapat menggunakan perintah `python manage.py st
 3. **Mendefinisikan model pada proyek**
 Di dalam direktori main, dapat dibuat model baru pada file `models.py`. Dalam tugas ini, model yang diperlukan adalah Product yang memiliki atribut nama dengan tipe CharField, price dengan tipe IntegerField, dan description dengan tipe TextField.
 4. **Menampilkan html berdasarkan data**
-Kita dapat membuat fungsi di `views.py` yang akan melakukan rendering template html agar data bisa ditampilkan ke user.
+Kita dapat membuat fungsi di `views.py` yang akan melakukan rendering template html. Fungsi ini digunakan untuk menyuplai data (dalam hal ini berupa nama dan kelas) ke file template html yang akan dirender.
 5. **Melakukan routing pada `urls.py`**
-Pada direktori proyek, kita dapat melakukan routing untuk mengarahkan url ke main app kita.
+Pada direktori proyek, kita dapat melakukan routing untuk mengarahkan root url ke main app kita.
 6. **Melakukan deployment melalui PWS**
 Apabila aplikasi sudah cukup baik, kita bisa melakukan deployment di Pacil Web Service agar web kita dapat diakses melalui internet.
 
 ### Django Workflow
-![Bagan Django Workflow](https://github.com/user-attachments/assets/7dfb6834-a0b2-4c7e-9742-822c9dc270e0)
+![Bagan Django Workflow](https://github.com/user-attachments/assets/a533084b-720a-4b73-8ae1-88599284c704)
+
+#### Penjelasan Bagan
+1. Client mengirimkan permintaan HTTP ke server Django. Ini bisa berupa permintaan GET, POST, atau metode HTTP lainnya.
+2. Django menerima permintaan ini dan memeriksa URL-nya. Django menggunakan URLconf (konfigurasi URL) untuk mencocokkan URL yang diminta dengan pola yang telah ditentukan dalam urls.py. Jika ada kecocokan, permintaan diteruskan ke view yang sesuai.
+3. Setelah URL dicocokkan, Django memanggil fungsi view yang terkait. View adalah fungsi Python yang menerima objek request sebagai parameter dan berisi logika untuk memproses permintaan tersebut. Di sini, view bisa berinteraksi dengan model, mengakses database, memproses formulir, dll.
+4. Jika view membutuhkan data dari database, maka akan mengakses models. Models adalah representasi dari data yang disimpan dalam database. Django ORM (Object-Relational Mapping) memungkinkan interaksi dengan database menggunakan kode Python alih-alih SQL langsung.
+5. Jika response yang diminta adalah halaman HTML, view biasanya akan mengembalikan HttpResponse dengan merender template. Template adalah file HTML yang mungkin berisi tag Django untuk menampilkan data dinamis. Data dari view diberikan ke template dalam bentuk konteks, yang kemudian dirender menjadi HTML.
+6. View mengembalikan objek HttpResponse yang berisi data yang akan dikirim kembali ke klien. Ini bisa berupa HTML, JSON, XML, atau bahkan file. Django kemudian mengirimkan response ini kembali ke klien melalui HTTP.
+7. Client menerima response ini dan menampilkannya ke pengguna.
 
 ### Fungsi Git
 Git berfungsi sebagai version control system dalam pengembangan perangkat lunak, memungkinkan developer untuk melacak perubahan kode, berkolaborasi secara efektif, dan mengelola proyek dengan lebih baik. Dengan Git, setiap perubahan yang dibuat dalam kode dapat dicatat, memungkinkan rollback ke versi sebelumnya jika diperlukan, serta memfasilitasi pengembangan secara paralel melalui fitur branching. Ini memungkinkan tim untuk bekerja pada fitur-fitur baru atau perbaikan bug secara terpisah tanpa mengganggu kode utama, dan kemudian menggabungkan perubahan tersebut dengan mudah. Git juga menyediakan mekanisme untuk menangani konflik yang muncul ketika beberapa developer mengedit bagian kode yang sama, menjadikannya alat penting untuk manajemen proyek perangkat lunak yang kompleks.

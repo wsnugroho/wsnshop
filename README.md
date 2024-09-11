@@ -1,5 +1,5 @@
 # WSNSHOP
-Tautan Web (BROKEN!!!): [http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop]()
+Tautan Web: [http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop](http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop)
 
 ## Tugas 2 - PBP 24/25
 
@@ -18,7 +18,7 @@ Pada direktori proyek, kita dapat melakukan routing untuk mengarahkan url ke mai
 Apabila aplikasi sudah cukup baik, kita bisa melakukan deployment di Pacil Web Service agar web kita dapat diakses melalui internet.
 
 ### Django Workflow
-![Django Workflow Placeholder]()
+![Bagan Django Workflow](https://github.com/user-attachments/assets/7dfb6834-a0b2-4c7e-9742-822c9dc270e0)
 
 ### Fungsi Git
 Git berfungsi sebagai version control system dalam pengembangan perangkat lunak, memungkinkan developer untuk melacak perubahan kode, berkolaborasi secara efektif, dan mengelola proyek dengan lebih baik. Dengan Git, setiap perubahan yang dibuat dalam kode dapat dicatat, memungkinkan rollback ke versi sebelumnya jika diperlukan, serta memfasilitasi pengembangan secara paralel melalui fitur branching. Ini memungkinkan tim untuk bekerja pada fitur-fitur baru atau perbaikan bug secara terpisah tanpa mengganggu kode utama, dan kemudian menggabungkan perubahan tersebut dengan mudah. Git juga menyediakan mekanisme untuk menangani konflik yang muncul ketika beberapa developer mengedit bagian kode yang sama, menjadikannya alat penting untuk manajemen proyek perangkat lunak yang kompleks.

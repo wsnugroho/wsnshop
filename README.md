@@ -1,19 +1,19 @@
 # WSNSHOP
-[Tautan web: http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop]()
+Tautan Web (BROKEN!!!): [http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop]()
 
 ## Tugas 2 - PBP 24/25
 
 ### Cara Implementasi Proyek
 1. **Membuat proyek Django baru**
-Untuk menginisiasi sebuah project baru pada Django, kita dapat menjalankan command berikut `django-admin startproject nama_project`. Framework akan menyiapkan berbagai struktur yang diperlukan setelahnya.
+Untuk menginisiasi sebuah project baru pada Django, kita dapat menjalankan command berikut `django-admin startproject nama_project`. Django akan menghasilkan file dan direktori projek yang diperlukan.
 2. **Membuat main app pada proyek django**
 Untuk membuat aplikasi main kita dapat menggunakan perintah `python manage.py startapp main`.
 3. **Mendefinisikan model pada proyek**
-Di dalam direktori main, dapat dibuat model baru pada file `models.py`. Dalam tugas ini, model yang diperlukan adalah Product dengan atribut nama dengan tipe CharField, price dengan tipe IntegerField, dan description dengan tipe TextField.
+Di dalam direktori main, dapat dibuat model baru pada file `models.py`. Dalam tugas ini, model yang diperlukan adalah Product yang memiliki atribut nama dengan tipe CharField, price dengan tipe IntegerField, dan description dengan tipe TextField.
 4. **Menampilkan html berdasarkan data**
-Kita dapat membuat fungsi di `views.py` yang akan melakukan rendering template html agar bisa ditampilkan ke user.
+Kita dapat membuat fungsi di `views.py` yang akan melakukan rendering template html agar data bisa ditampilkan ke user.
 5. **Melakukan routing pada `urls.py`**
-Pada direktori proyek, kita dapat melakukan routing untuk mengarahkan url ke main app.
+Pada direktori proyek, kita dapat melakukan routing untuk mengarahkan url ke main app kita.
 6. **Melakukan deployment melalui PWS**
 Apabila aplikasi sudah cukup baik, kita bisa melakukan deployment di Pacil Web Service agar web kita dapat diakses melalui internet.
 

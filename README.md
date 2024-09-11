@@ -1,5 +1,5 @@
 # WSNSHOP
-Tautan Web: [http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop](http://pbp.cs.ui.ac.id/wisnu.nugroho31/wsnshop)
+Tautan Web: [http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id](http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id)
 
 ## Tugas 2 - PBP 24/25
 

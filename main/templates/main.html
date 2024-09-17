@@ -20,4 +20,29 @@
     <p>{{ class }}</p>
   </div>
 </section>
+<section>
+  {% if not products %}
+    <p>Belum ada data product pada wsnshop.</p>
+  {% else %}
+    <table>
+      <tr>
+        <th>Product ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+      </tr>
+      {% for product in products %}
+        <tr>
+          <td>{{product.id}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.price}}</td>
+          <td>{{product.description}}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+  <a href="{% url 'main:create_product' %}">
+    <button>Add New Product</button>
+  </a>
+</section>
 {% endblock content %}

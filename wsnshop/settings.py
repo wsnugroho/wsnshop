@@ -31,6 +31,12 @@ ALLOWED_HOSTS = [
     "wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id",
+    "https://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id",
+]
 
 # Application definition
 

@@ -193,19 +193,19 @@ Method `is_valid()` sangat penting karena memastikan bahwa data yang diinputkan 
 
 ### Screenshot Response Endpoints Dengan Menggunakan Postman
 
-1. `/show_xml`
+1. `/xml`
    
     ![XML](https://github.com/user-attachments/assets/e2195a3f-725c-4fad-b5a0-c0f14c9a9526)
 
-2. `/show_xml/:id`
+2. `/xml/:id`
     
     ![XML By ID](https://github.com/user-attachments/assets/ec62a132-1aa9-49c8-8d6d-e49ccf9dfaaf)
 
-3. `/show_json`
+3. `/json`
     
     ![JSON](https://github.com/user-attachments/assets/35ab8f2a-e849-4133-918e-79f3a33823d0)
 
-4. `/show_json/:id`
+4. `/json/:id`
     
     ![JSON By ID](https://github.com/user-attachments/assets/b3e942f7-0903-4e41-82f6-2cd2669956c7)
 

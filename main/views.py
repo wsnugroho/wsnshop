@@ -61,6 +61,13 @@ def login_user(request):
     return render(request, "login.html", context)
 
 
+def logout_user(request):
+    logout(request)
+    response = HttpResponseRedirect(reverse("main:login"))
+    response.delete_cookie("last_login")
+    return response
+
+
 def show_xml(request):
     data = Product.objects.all()
     return HttpResponse(

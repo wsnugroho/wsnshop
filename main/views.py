@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core import serializers
 from django.shortcuts import HttpResponse, redirect, render
 
@@ -23,6 +25,18 @@ def create_product(request):
         return redirect("main:show_main")
     context = {"form": form}
     return render(request, "create_product.html", context)
+
+
+def register(request):
+    form = UserCreationForm()
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your account has been successfully created!")
+            return redirect("main:login")
+    context = {"form": form}
+    return render(request, "register.html", context)
 
 
 def show_xml(request):

@@ -15,12 +15,13 @@ from main.models import Product
 
 @login_required(login_url="/login")
 def show_main(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(user=request.user)
     context = {
         "npm": 2306275084,
-        "name": "Wisnu Nugroho",
         "class": "PBP D",
+        "name": request.user.username,
         "products": products,
+        "last_login": request.COOKIES["last_login"],
     }
     return render(request, "main.html", context)
 
@@ -28,7 +29,9 @@ def show_main(request):
 def create_product(request):
     form = ProductForm(request.POST or None)
     if form.is_valid() and request.method == "POST":
-        form.save()
+        # product = form.save(commit=False)
+        # product.user = request.user
+        # product.save()
         return redirect("main:show_main")
     context = {"form": form}
     return render(request, "create_product.html", context)

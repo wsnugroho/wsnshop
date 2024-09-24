@@ -10,6 +10,7 @@ urlpatterns = [
     path("", show_main, name="show_main"),
     path("create-product/", create_product, name="create_product"),
     path("register/", register, name="register"),
+    path("login/", login_user, name="login"),
     path("xml/", show_xml, name="show_xml"),
     path("xml/<str:id>/", show_xml_by_id, name="show_xml_by_id"),
     path("json/", show_json, name="show_json"),

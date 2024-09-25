@@ -36,6 +36,11 @@ Django mengingat pengguna yang telah login dengan menggunakan session cookies. K
 
 Selain untuk sesi login, cookies juga memiliki banyak kegunaan lain, seperti menyimpan preferensi pengguna, melacak aktivitas pengguna, dan menyimpan data sementara. Namun, tidak semua cookies aman digunakan. Risiko keamanan seperti serangan man-in-the-middle (MitM) bisa terjadi jika cookies dikirim tanpa enkripsi HTTPS, dan serangan XSS dapat mengekspos cookies jika situs tidak terlindungi dengan baik. Oleh karena itu, untuk meningkatkan keamanan, cookies harus dikonfigurasi dengan flag Secure agar hanya dikirim melalui HTTPS dan dilindungi dengan mekanisme tambahan seperti perlindungan CSRF, khususnya pada aplikasi web yang memproses data sensitif.
 
+### Membuat Dua Akun dengan Tiga Dummy data di lokal
+![Dummy Django 1](https://github.com/user-attachments/assets/78869ef8-1cce-48ed-9fff-59f36ab03b58)
+![Dummy Django 2](https://github.com/user-attachments/assets/e79a56f3-a4d0-45fc-b877-c90d5117bb50)
+
+
 ### Cara Implementasi Proyek
 
 - **Registration**

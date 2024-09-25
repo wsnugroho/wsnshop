@@ -1,6 +1,76 @@
 # WSNSHOP
 Tautan Web: [http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id](http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id)
 
+## Tugas 4
+
+### Apa perbedaan antara HttpResponseRedirect() dan redirect()?
+
+Fungsi `HttpResponseRedirect()` maupun `redirect()` biasanya digunakan untuk mengarahkan pengguna ke URL lain, tetapi ada perbedaan dalam cara kerjanya. `HttpResponseRedirect()` adalah fungsi dasar yang membutuhkan URL lengkap sebagai argumen dan mengembalikan respons HTTP dengan status kode 302 untuk redirection. Meskipun memberikan kontrol lebih besar, metode ini kurang fleksibel karena URL harus ditentukan secara langsung. Sementara itu, fungsi `redirect()` lebih sederhana dan fleksibel, karena dapat menerima URL, nama view, atau objek model sebagai argumen. Fungsi ini secara otomatis menghasilkan URL menggunakan `reverse()`, sehingga mempermudah pengalihan tanpa perlu menentukan URL secara manual. Oleh karena itu, `redirect()` biasanya lebih dipilih karena kemudahannya, terutama saat bekerja dengan nama view atau objek.
+
+### Jelaskan cara kerja penghubungan model Product dengan User!
+Di Django, model `Product` dapat dihubungkan dengan model `User` menggunakan foreign key untuk merepresentasikan hubungan satu-ke-banyak, di mana satu pengguna (`User`) dapat memiliki banyak produk (`Product`). Untuk menghubungkan keduanya, pertama, model `User` bawaan dari Django diimpor dari `django.contrib.auth.models`. Setelah itu, di dalam model `Product`, sebuah foreign key ditambahkan yang menghubungkannya dengan model `User`, misalnya melalui field user yang diatur dengan `models.ForeignKey(User, on_delete=models.CASCADE)`. Dengan cara ini, setiap produk akan terkait dengan pengguna yang menjadi pemiliknya. `on_delete=models.CASCADE` memastikan bahwa jika pengguna dihapus, produk yang dimilikinya juga ikut dihapus. 
+
+### Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+
+#### Perbedaan *Authentication* dengan *Authorization*
+
+- *Authentication* adalah proses untuk memverifikasi identitas pengguna. Saat pengguna memasukkan username dan password, sistem akan memeriksa apakah kombinasi tersebut sudah terdaftar dan valid. Jika ya, maka pengguna dianggap telah terautentikasi.
+-  *Authorization* adalah proses untuk menentukan hak akses pengguna setelah mereka terautentikasi. Setelah pengguna login, sistem akan memeriksa peran atau izin yang dimiliki pengguna tersebut untuk menentukan tindakan apa saja yang boleh dilakukannya di dalam aplikasi.
+
+#### Apa yang dilakukan Django saat pengguna login?
+
+1. Pengguna akan diminta untuk memasukkan username dan password mereka pada form login.
+2. Django akan mencari user dengan username yang sesuai di database. Jika user ditemukan, password yang telah dimasukkan akan dibandingkan dengan hash password yang tersimpan di database.
+3. Jika password cocok, Django akan membuat sesi untuk pengguna tersebut. Sesi ini adalah sebuah mekanisme untuk melacak status login pengguna selama sesi berlangsung.
+4. Setelah sesi dibuat, pengguna akan diarahkan ke halaman yang ditentukan, misalnya dashboard atau halaman utama.
+
+#### Pengimplementasian *Authentication* dan *Authorization* pada Django
+
+Untuk authentication, Django menyediakan modul `django.contrib.auth`, yang mencakup model `User` dan fungsi seperti `authenticate()` untuk memverifikasi username dan password, serta `login()` untuk memulai sesi bagi pengguna yang berhasil login. Proses ini menyimpan ID pengguna dalam sesi yang dapat diakses melalui request berikutnya.
+
+Untuk authorization, Django menggunakan sistem izin berbasis peran dan grup. Setiap User dapat diberikan izin spesifik (misalnya, add_product atau delete_order) atau dapat dimasukkan ke dalam grup dengan izin tertentu. Django memeriksa izin ini melalui metode seperti `has_perm()` untuk memeriksa apakah pengguna diizinkan melakukan suatu tindakan. Django juga menyediakan dekorator seperti `@login_required` dan `@permission_required` untuk membatasi akses ke view berdasarkan authentication dan authorization.
+
+### Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+
+Django mengingat pengguna yang telah login dengan menggunakan session cookies. Ketika seorang pengguna berhasil login, Django membuat sesi (session) dan menyimpan informasi sesi di server, seperti ID pengguna. Sesi ini diidentifikasi oleh sebuah cookie yang dikirimkan ke browser pengguna. Cookie tersebut berisi ID sesi yang memungkinkan Django mencocokkan pengguna dengan sesi yang tersimpan di server setiap kali pengguna mengirimkan request baru. Dengan begitu, meskipun pengguna berpindah halaman atau memulai request baru, Django tetap bisa mengenali pengguna selama cookie sesi tersebut masih berlaku dan belum kadaluarsa.
+
+Selain untuk sesi login, cookies juga memiliki banyak kegunaan lain, seperti menyimpan preferensi pengguna, melacak aktivitas pengguna, dan menyimpan data sementara. Namun, tidak semua cookies aman digunakan. Risiko keamanan seperti serangan man-in-the-middle (MitM) bisa terjadi jika cookies dikirim tanpa enkripsi HTTPS, dan serangan XSS dapat mengekspos cookies jika situs tidak terlindungi dengan baik. Oleh karena itu, untuk meningkatkan keamanan, cookies harus dikonfigurasi dengan flag Secure agar hanya dikirim melalui HTTPS dan dilindungi dengan mekanisme tambahan seperti perlindungan CSRF, khususnya pada aplikasi web yang memproses data sensitif.
+
+### Cara Implementasi Proyek
+
+- **Registration**
+  1. Membuat fungsi `register` pada  `views.py` yang digunakan untuk handling registrasi user pada aplikasi kita.
+  2. Menggunakan `UserCreationForm` dari Django untuk memproses data form yang diterima dari client.
+  3. Menyimpan data user jika data tersebut valid ke database dan redirect user ke halaman login.
+  4. Membuat `register.html` pada direktori `main/templates` yang berfungsi untuk menampilkan halaman registrasi user.
+  5. Melakukan routing halaman register pada `main/urls.py`.
+
+- **Login**
+  1. Membuat fungsi `login_user` pada `views.py` yang berguna untuk mengautentikasi pengguna yang ingin login.
+  2. Menggunakan `UserCreationForm` dari Django untuk memproses data form yang diterima dari client.
+  3. Melakukan login berdasarkan data dari form login dengan menggunakan fungsi `login` yang telah disediakan oleh Django.
+  4. Redirect request user ke halaman main, jika tidak ada kendala login.
+  5. Menggunakan fungsi decorator `@login_required` pada fungsi `show_main` untuk merestriksi halaman main (hanya dapat diakses oleh user yang telah terdaftar).
+  6.  Membuat `login.html` pada direktori `main/templates` yang berfungsi untuk menampilkan halaman login user.
+  7.  Melakukan routing halaman login pada `main/urls.py`.
+
+- **Logout**
+  1. Membuat fungsi `logout_user` pada `views.py` yang berguna untuk menghapus sesi pengguna yang saat ini login.
+  2. Melakukan logout dengan menggunakan fungsi `logout` yang telah disediakan oleh Django.
+  3. Redirect user ke halaman , jika tidak ada kendala logout.
+  4. Menambahkan link yang digunakan untuk logout pada `templates/main.html`.
+  5. Melakukan routing logout pada `main/urls.py`.
+
+- **Menggunakan Data dari Cookies**
+  1. Memodifikasi bagian dari fungsi `login_user` menggunakan `HTTPResponseRedirect` dan `reverse` agar kita dapat menyisipkan data cookies pada response yang akan dikembalikan ke client sebelum melakukan redirect ke halaman main.
+  2. Memodifikasi bagian dari fungsi `logout_user` menggunakan `HTTPResponseRedirect` dan `reverse` agar kita dapat menghapus cookies sebelum melakukan redirect ke halaman login.
+  3. Menampilkan last_login dari data cookies di `main.hmtl` 
+
+- **Menghubungkan Model Product dengan User**
+  1. Menambahkan field bertipe ForeignKey pada Product model yang menghubungkan antara Product dan User dengan relasi satu User memiliki banyak Product.
+  2. Memodifikasi fungsi `create_product` pada `views.py` agar menyimpan data mengenai current user yang membuat suatu product.
+  3. Mengubah `templates/main.html` dan `show_main` di `views.py` agar hanya menampilkan product user yang sedang login.  
+
 ## Tugas 3
 
 ### Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?

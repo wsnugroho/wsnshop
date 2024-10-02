@@ -1,6 +1,96 @@
 # WSNSHOP
 Tautan Web: [http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id](http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id)
 
+## Tugas 5
+
+### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+Urutan prioritas CSS selector ditentukan oleh tingkat specificity masing-masing selector, dari yang paling rendah hingga yang paling tinggi. Berikut contoh urutan dari beberapa CSS selector dari yang paling tinggi ke yang paling rendah (urutan atas akan mengoverride style urutan dibawahnya):
+1. **`!important`**, jika digunakan, akan mengabaikan semua aturan prioritas yang ada, kecuali jika ada selector lain yang juga menggunakan `!important`.
+2. **Inline CSS**, yaitu CSS yang didefinisikan langsung di atribut `style` pada elemen HTML, memiliki prioritas sangat tinggi.
+3. **Selector ID**, yang menggunakan atribut `id` seperti `#myId {}`.
+4. **Selector atribut dan pseudo-class**, misalnya `[type="text"] {}` atau `:hover`.
+5. **Selector kelas (class)**, menggunakan atribut `class` seperti `.myClass {}`.
+6. **Selector elemen (tag)**, seperti `p {}`, mengacu pada elemen HTML spesifik.
+7. **Selector universal (`*`)** memiliki prioritas paling rendah dan berlaku untuk semua elemen.
+
+
+### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+
+Responsive design merupakan salah satu konsep penting dalam pengembangan aplikasi web karena pada masa ini perangkat yang digunakan untuk mengakses web sudah sangat bervariasi, mulai dari ponsel, tablet, hingga desktop dengan ukuran layar yang berbeda-beda. Dengan responsive design, tampilan dan fungsionalitas web dapat secara otomatis menyesuaikan diri dengan perangkat pengguna, memberikan pengalaman yang baik pada pengguna tanpa dia perlu melakukan *zoom* atau *scrolling* berlebihan. Hal ini tidak hanya meningkatkan kenyamanan pengguna, tetapi juga dapat meningkatkan performa SEO karena search engine seperti Google biasanya mengutamakan situs yang mobile-friendly. Contoh aplikasi yang sudah menerapkan responsive design adalah **Twitter**, yang memiliki tampilan menyesuaikan ukuran semua layar. Sebaliknya, beberapa situs lama seperti **CS.RIN.RU** masih memiliki desain yang kurang responsif, sehingga cenderung sulit digunakan di perangkat mobile.
+
+
+### Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+**Margin**, **border**, dan **padding** adalah bagian dari *box model* dalam CSS yang menentukan letak suatu elemen di halaman web. Berikut beberapa perbedaan dari margin, border, dan padding:
+
+- **Margin**: Ini adalah ruang di luar elemen yang memisahkan elemen dari elemen lainnya. Margin bersifat eksternal dan tidak memengaruhi ukuran elemen itu sendiri. Kita dapat mengatur margin menggunakan properti css seperti `margin`, `margin-top`, `margin-right`, `margin-bottom`, dan `margin-left`.
+
+- **Border**: Ini adalah garis yang mengelilingi elemen. Border berada di antara margin dan padding, dan dapat memiliki ketebalan, warna, serta style yang bisa disesuaikan. Kita dapat mengatur border menggunakan properti css seperti `border`, `border-width`, `border-style`, dan `border-color`.
+
+- **Padding**: Ini adalah ruang di dalam elemen, antara konten elemen dan *border*-nya. Padding memengaruhi ukuran elemen karena menambah ruang di dalam elemen. Kita dapat mengatur padding dengan properti css seperti `padding`, `padding-top`, `padding-right`, `padding-bottom`, dan `padding-left`.
+
+```css
+.element {
+  margin: 20px;         /* Elemen memiliki jarak 20px terhadap elemen lainnya */
+  border: 2px solid red; /* Menambahkan garis border dengan ketebalan 2px dan berwarna merah */
+  padding: 10px;        /* Jarak antara konten di suatu element dengan bordernya */
+}
+```
+
+
+### Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+
+**Flexbox (Flexible Box Layout)** adalah sebuah model untuk tata letak satu dimensi yang memungkinkan elemen dalam container untuk disusun secara fleksibel, baik dalam baris (row) maupun kolom (column). Flexbox memudahkan penyesuaian ukuran, urutan, dan jarak antar elemen, serta memungkinkan responsivitas yang lebih baik pada desain web. Kegunaan utama Flexbox adalah untuk menyusun elemen dalam satu dimensi, seperti navbar, cards, atau komponen ui lainnya, sehingga menciptakan sebuah tata letak yang lebih responsif dan teratur.
+
+**Grid Layout**, di sisi lain, adalah model tata letak dua dimensi yang memungkinkan pengaturan elemen dalam baris dan kolom secara bersamaan. Dengan menggunakan Grid, developer dapat menentukan ukuran dan posisi elemen dengan lebih presisi menggunakan sistem grid. Kegunaan utama Grid Layout adalah untuk membuat tata letak yang lebih kompleks, seperti halaman web yang terdiri dari berbagai bagian, kolom, dan gambar. Grid sangat berguna untuk desain yang memerlukan pengaturan ruang secara lebih terstruktur, seperti halaman galeri, dashboard, atau layout yang mengandung banyak elemen.
+
+### Cara Implementasi Proyek
+
+1. Menambahkan fungsi *edit_product* untuk memungkinkan user untuk mengubah product yang telah dibuat.
+   ```python
+   def edit_product(request, id):
+        product = Product.objects.get(pk=id)
+        form = ProductForm(request.POST or None, instance=product)
+        if form.is_valid() and request.method == "POST":
+            form.save()
+            return HttpResponseRedirect(reverse("main:show_main"))
+        context = {"form": form}
+        return render(request, "edit_product.html", context)
+   ```
+2. Menambahkan fungsi *delete_product* supaya user dapat menghapus product yang dipilih.
+   ```python
+   def delete_product(request, id):
+        product = Product.objects.get(pk=id)
+        product.delete()
+        return HttpResponseRedirect(reverse("main:show_main"))
+   ```
+3. Melakukan routing url pada fungsi *edit_product* dan *delete_product*.
+    ```python
+    ...
+    path("edit-product/<uuid:id>/", edit_product, name="edit_product"),
+    path("delete-product/<uuid:id>/", delete_product, name="delete_product"),
+    ...
+    
+    ```
+4. Mengkonfigurasi `settings.py` django agar dapat menyajikan static files.
+    ```python
+    MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'whitenoise.middleware.WhiteNoiseMiddleware',
+    ]
+    ```
+    ```python
+    STATIC_URL = '/static/'
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static'
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static'
+    ```
+5. Theming dengan tailwind untuk page yang diperlukan.
+
 ## Tugas 4
 
 ### Apa perbedaan antara HttpResponseRedirect() dan redirect()?

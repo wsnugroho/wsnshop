@@ -1,0 +1,80 @@
+<nav class="bg-blue-900">
+    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-row items-center justify-between py-4">
+            <a href="{% url 'main:show_main' %}"
+               class="flex items-center space-x-3">
+                <span class="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">WSNShop</span>
+            </a>
+            <div class="hidden md:flex items-center justify-end gap-4">
+                {% if user.is_authenticated %}
+                    <div class="hidden flex-row justify-end gap-4 md:flex w-full flex-none">
+                        <div class="text-right text-white">
+                            <h3 class="text-xl font-semibold uppercase">{{ user }}</h3>
+                            <p class="text-xs">{{ last_login }}</p>
+                        </div>
+                        <svg class="w-1/12 fill-white"
+                             viewBox="0 0 1024 1024"
+                             version="1.1"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M843.282963 870.115556c-8.438519-140.515556-104.296296-257.422222-233.908148-297.14963C687.881481 536.272593 742.4 456.533333 742.4 364.088889c0-127.241481-103.158519-230.4-230.4-230.4S281.6 236.847407 281.6 364.088889c0 92.444444 54.518519 172.183704 133.12 208.877037-129.611852 39.727407-225.46963 156.634074-233.908148 297.14963-0.663704 10.903704 7.964444 20.195556 18.962963 20.195556l0 0c9.955556 0 18.299259-7.774815 18.962963-17.73037C227.745185 718.506667 355.65037 596.385185 512 596.385185s284.254815 122.121481 293.357037 276.195556c0.568889 9.955556 8.912593 17.73037 18.962963 17.73037C835.318519 890.311111 843.946667 881.019259 843.282963 870.115556zM319.525926 364.088889c0-106.287407 86.186667-192.474074 192.474074-192.474074s192.474074 86.186667 192.474074 192.474074c0 106.287407-86.186667 192.474074-192.474074 192.474074S319.525926 470.376296 319.525926 364.088889z" />
+                        </svg>
+                    </div>
+                    <a href="{% url 'main:logout' %}"
+                       class="text-center bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="{% url 'main:login' %}"
+                       class="text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mr-2">
+                        Login
+                    </a>
+                    <a href="{% url 'main:register' %}"
+                       class="text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Register
+                    </a>
+                {% endif %}
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <svg class="w-6 h-6 text-white"
+                         fill="none"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         stroke-width="2"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu hidden md:hidden px-4 w-full md:max-w-full">
+        <div class="pt-2 pb-3 space-y-1 mx-auto">
+            {% if user.is_authenticated %}
+                <a href="{% url 'main:logout' %}"
+                   class="block text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{% url 'main:login' %}"
+                   class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mb-2">
+                    Login
+                </a>
+                <a href="{% url 'main:register' %}"
+                   class="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Register
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+      const btn = document.querySelector("button.mobile-menu-button");
+      const menu = document.querySelector(".mobile-menu");
+    
+      btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+    </script>
+</nav>

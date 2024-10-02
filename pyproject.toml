@@ -1,0 +1,5 @@
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+
+[tool.djlint]
+profile="django"

@@ -19,7 +19,8 @@ def show_main(request):
     context = {
         "npm": 2306275084,
         "class": "PBP D",
-        "name": request.user.username,
+        "name": "Wisnu Nugroho",
+        "user": request.user,
         "products": products,
         "last_login": request.COOKIES["last_login"],
     }
@@ -33,7 +34,11 @@ def create_product(request):
         product.user = request.user
         product.save()
         return redirect("main:show_main")
-    context = {"form": form}
+    context = {
+        "form": form,
+        "user": request.user,
+        "last_login": request.COOKIES["last_login"],
+    }
     return render(request, "create_product.html", context)
 
 
@@ -43,7 +48,11 @@ def edit_product(request, id):
     if form.is_valid() and request.method == "POST":
         form.save()
         return HttpResponseRedirect(reverse("main:show_main"))
-    context = {"form": form}
+    context = {
+        "form": form,
+        "user": request.user,
+        "last_login": request.COOKIES["last_login"],
+    }
     return render(request, "edit_product.html", context)
 
 

@@ -1,60 +1,30 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
+{% load static %}
 {% block meta %}
-<title>WSNShop</title>
+    <title>WSNShop</title>
 {% endblock meta %}
-
 {% block content %}
-<section>
-  <h1>WSNShop</h1>
-  <div>
-    <h5>Name:</h5>
-    <p>{{ name }}</p>
-  </div>
-  <div>
-    <h5>NPM:</h5>
-    <p>{{ npm }}</p>
-  </div>
-  <div>
-    <h5>Class:</h5>
-    <p>{{ class }}</p>
-  </div>
-</section>
-<section>
-  {% if not products %}
-    <p>Belum ada data product pada wsnshop.</p>
-  {% else %}
-    <table>
-      <tr>
-        <th>Product ID</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Description</th>
-      </tr>
-      {% for product in products %}
-        <tr>
-          <td>{{product.id}}</td>
-          <td>{{product.name}}</td>
-          <td>{{product.price}}</td>
-          <td>{{product.description}}</td>
-          <td>
-            <a href="{% url 'main:edit_product' product.pk %}">
-              <button>Edit</button>
-            </a>
-            <a href="{% url 'main:delete_product' product.pk %}">
-              <button>Delete</button>
-            </a>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-  {% endif %}
-  <a href="{% url 'main:create_product' %}">
-    <button>Add New Product</button>
-  </a>
-  <a href="{% url 'main:logout' %}">
-    <button>Logout</button>
-  </a>
-  <h5>Sesi terakhir login: {{ last_login }}</h5>
-</section>
+    {% include "navbar.html" %}
+    <section class="mx-auto my-10 flex min-h-screen max-w-screen-xl flex-col items-center">
+        <h1 class="text-center text-4xl mt-16 font-extrabold">
+            Selamat datang <span class="text-blue-700">{{ user }}</span>!
+        </h1>
+        {% if not products %}
+            <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                <img src={% static 'images/pepe-sad.jpg' %} alt="Pepe Sad" class="">
+                <p class="text-center text-lg mb-4">Belum ada data product pada wsnshop.</p>
+                <a href="{% url "main:create_product" %}"
+                   class="block rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white">Tambah Product</a>
+            </div>
+        {% else %}
+            <div class="w-full grid gap-4 my-12 sm:grid-cols-2 md:grid-cols-4">
+                {% for product in products %}
+                    {% include "card_product.html" with product=product %}
+                {% endfor %}
+            </div>
+            <a href="{% url "main:create_product" %}"
+               class="block rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white">Tambah Product</a>
+        {% endif %}
+    </section>
+    {% include "footer.html" %}
 {% endblock content %}

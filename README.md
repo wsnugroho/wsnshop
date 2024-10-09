@@ -1,6 +1,30 @@
 # WSNSHOP
 Tautan Web: [http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id](http://wisnu-nugroho31-wsnshop.pbp.cs.ui.ac.id)
 
+## Tugas 6
+
+### Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+
+JavaScript memiliki peran penting dalam pengembangan aplikasi web karena kemampuannya untuk meningkatkan interaktivitas dan dinamisme pada halaman web. Dengan JavaScript, pengembang dapat memanipulasi elemen HTML dan CSS secara langsung, memungkinkan perubahan tampilan dan fungsionalitas tanpa harus memuat ulang halaman. Selain itu, JavaScript memungkinkan validasi data di sisi klien, sehingga mengurangi beban pada server dan meningkatkan efisiensi aplikasi. Bahasa ini juga didukung oleh berbagai pustaka dan kerangka kerja yang membantu mempercepat pengembangan aplikasi web yang lebih kompleks. Kemampuan JavaScript untuk berkomunikasi dengan API eksternal dan backend menjadikannya pilihan utama dalam membuat aplikasi web yang responsif dan interaktif.
+
+### Jelaskan fungsi dari penggunaan `await` ketika kita menggunakan `fetch()`! Apa yang akan terjadi jika kita tidak menggunakan `await`?
+
+Penggunaan `await` dengan `fetch()` berfungsi untuk menunggu hasil operasi asinkron tanpa memblokir alur utama program, sehingga memungkinkan interaksi web tetap berjalan dengan lancar. Ketika `fetch()` digunakan untuk mengambil data dari server, fungsi tersebut mengembalikan sebuah promise yang bisa memakan waktu beberapa saat untuk diselesaikan. Dengan await, kita bisa menunggu hasil dari promise tanpa menghentikan proses lain di halaman web (*nonblocking*), memastikan pengguna tetap bisa berinteraksi dengan elemen lain selama data sedang diambil. Jika await tidak digunakan, kode akan dieksekusi secara paralel, sehingga program bisa melanjutkan sebelum respons diterima, yang berpotensi menyebabkan penggunaan data yang belum tersedia atau kosong. Hal ini menjaga performa aplikasi tetap responsif dan tidak membekukan antarmuka pengguna.
+
+### Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
+
+Kita perlu menggunakan dekorator `csrf_exempt` pada view yang akan digunakan untuk permintaan AJAX POST karena mekanisme Cross-Site Request Forgery (CSRF) di Django secara otomatis memeriksa setiap permintaan POST untuk memastikan bahwa permintaan tersebut sah dan berasal dari sumber yang tepercaya. AJAX POST dari sumber eksternal atau dari halaman tanpa token CSRF yang valid akan ditolak oleh Django sebagai langkah keamanan. Namun, dalam beberapa kasus seperti saat membuat API atau layanan AJAX sederhana, kita mungkin tidak ingin menggunakan perlindungan CSRF karena tidak menggunakan form tradisional atau interaksi langsung dengan pengguna. Dalam situasi ini, dekorator `csrf_exempt` digunakan untuk menonaktifkan pemeriksaan CSRF pada view tersebut, memungkinkan permintaan POST dari AJAX untuk diterima tanpa token CSRF.
+
+### Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+
+Melakukan pembersihan data input hanya di sisi frontend tidaklah cukup, karena untuk keamanan yang optimal, pembersihan ini juga harus dilakukan di backend. Validasi di frontend memang bermanfaat untuk memberikan umpan balik instan kepada pengguna, sehingga meningkatkan pengalaman penggunaan. Namun, sisi frontend bisa dengan mudah dimanipulasi oleh pengguna yang berpengalaman atau pihak ketiga. Jika validasi hanya bergantung pada frontend, ada risiko data yang tidak valid atau berbahaya tetap dapat mencapai server tanpa terdeteksi. Oleh karena itu, pembersihan dan validasi di backend sangat penting untuk memastikan data yang masuk aman dan sesuai dengan standar sebelum diproses, sehingga membantu melindungi aplikasi dari ancaman seperti injection, cross-site scripting (XSS), dan manipulasi data.
+
+### Cara Implementasi Proyek
+
+1. 
+
+
+
 ## Tugas 5
 
 ### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!

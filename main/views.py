@@ -17,13 +17,11 @@ from main.models import Product
 
 @login_required(login_url="/login")
 def show_main(request):
-    products = Product.objects.filter(user=request.user)
     context = {
         "npm": 2306275084,
         "class": "PBP D",
         "name": "Wisnu Nugroho",
         "user": request.user,
-        "products": products,
         "last_login": request.COOKIES["last_login"],
     }
     return render(request, "main.html", context)
@@ -101,7 +99,7 @@ def logout_user(request):
 
 
 def show_xml(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 
@@ -111,7 +109,7 @@ def show_xml_by_id(request, id):
 
 
 def show_json(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 

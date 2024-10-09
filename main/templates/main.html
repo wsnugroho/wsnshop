@@ -9,22 +9,177 @@
         <h1 class="text-center text-4xl mt-16 font-extrabold">
             Selamat datang <span class="text-blue-700">{{ user }}</span>!
         </h1>
-        {% if not products %}
-            <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
-                <img src={% static 'images/pepe-sad.jpg' %} alt="Pepe Sad" class="">
-                <p class="text-center text-lg mb-4">Belum ada data product pada wsnshop.</p>
-                <a href="{% url "main:create_product" %}"
-                   class="block rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white">Tambah Product</a>
+        <div id="product_cards"></div>
+        <div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+            <div id="crudModalContent" class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-4 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900">
+                  Add New Product
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" id="closeModalBtn">
+                  <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="px-6 py-4 space-y-6 form-style">
+                <form id="productForm">
+                  <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Enter your product" required>
+                  </div>
+                  <div class="mb-4">
+                    <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                    <input type="number" id="price" name="price" min="0" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" required>
+                  </div>
+                  <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="description" name="description" rows="3" class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Describe your product" required></textarea>
+                  </div>
+                </form>
+              </div>
+              <!-- Modal footer -->
+              <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg" id="cancelButton">Cancel</button>
+                <button type="submit" id="submitProductForm" form="productForm" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+              </div>
             </div>
-        {% else %}
-            <div class="w-full grid gap-4 my-12 sm:grid-cols-2 md:grid-cols-4">
-                {% for product in products %}
-                    {% include "card_product.html" with product=product %}
-                {% endfor %}
-            </div>
-            <a href="{% url "main:create_product" %}"
-               class="block rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white">Tambah Product</a>
-        {% endif %}
+        </div>
+        <div class="flex my-4">
+            <a href="{% url 'main:create_product' %}" class="bg-blue-800 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mx-4 ">
+                Add New Mood Entry
+            </a>
+            <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+              Add New Mood Entry by AJAX
+            </button>
+        </div>  
     </section>
     {% include "footer.html" %}
+    <script>
+        async function getMoodEntries() {
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+        }
+
+        async function refreshMoodEntries() {
+            document.getElementById("product_cards").innerHTML = "";
+            document.getElementById("product_cards").className = "";
+            const moodEntries = await getMoodEntries();
+            let htmlString = "";
+            let classNameString = "";
+
+            if (moodEntries.length === 0) {
+                classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+                htmlString = `
+                    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                        <img src={% static 'images/pepe-sad.jpg' %} alt="Pepe Sad" class="w-32 h-32 mb-4">
+                        <p class="text-center text-lg mb-4">Belum ada data product pada wsnshop.</p>
+                    </div>
+                `;
+            }
+            else {
+                classNameString = "w-full grid gap-4 my-12 sm:grid-cols-2 md:grid-cols-4"
+                moodEntries.forEach((item) => {
+                    htmlString += `
+                    <div class="flex flex-col rounded-lg p-6 shadow-md shadow-blue-600">
+                        <h2 class="mb-4 text-2xl font-bold tracking-tight">${item.fields.name}</h2>
+                        <p class="mb-2 font-extrabold">Rp${item.fields.price}</p>
+                        <p class="mb-2 grow">${item.fields.description}</p>
+                        <div class="mt-3 flex flex-row gap-2">
+                            <a href="/create-product/${item.pk}"
+                            class="w-full flex px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg items-center">
+                                <svg class="w-8 h-8"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0">
+                                    </g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                    <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                    <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                    </g>
+                                </svg>
+                                <span>Edit</span>
+                            </a>
+                            <a href="/delete-product/${item.pk}"
+                            class="w-full flex px-4 py-2 bg-red-600 my-auto text-white font-semibold rounded-lg items-center justify-self-end">
+                                <svg class="w-8 h-8"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0">
+                                    </g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                    <path d="M10 12L14 16M14 12L10 16M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                    </g>
+                                </svg>
+                                <span>Delete</span>
+                            </a>
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+            document.getElementById("product_cards").className = classNameString;
+            document.getElementById("product_cards").innerHTML = htmlString;
+        }
+        refreshMoodEntries();
+
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        function showModal() {
+            const modal = document.getElementById('crudModal');
+            const modalContent = document.getElementById('crudModalContent');
+
+            modal.classList.remove('hidden'); 
+            setTimeout(() => {
+                modalContent.classList.remove('opacity-0', 'scale-95');
+                modalContent.classList.add('opacity-100', 'scale-100');
+            }, 50); 
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('crudModal');
+            const modalContent = document.getElementById('crudModalContent');
+
+            modalContent.classList.remove('opacity-100', 'scale-100');
+            modalContent.classList.add('opacity-0', 'scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150); 
+        }
+
+        
+        document.getElementById("cancelButton").addEventListener("click", hideModal);
+        document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+
+        function addProduct() {
+            fetch("{% url 'main:create_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#productForm')),
+            })
+            .then(response => response.ok ? refreshMoodEntries() : alert("Failed to add Product"))
+            .catch(err => alert(`An error occured: ${err.message}`))
+            document.getElementById("productForm").reset(); 
+            document.querySelector("[data-modal-toggle='crudModal']").click();
+            return false;
+        }
+
+        document.getElementById("productForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            addProduct();
+            hideModal();
+        })
+    </script>
 {% endblock content %}

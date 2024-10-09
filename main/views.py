@@ -8,8 +8,10 @@ from django.core import serializers
 from django.http import HttpResponseRedirect
 from django.shortcuts import HttpResponse, redirect, render
 from django.urls import reverse
+from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from urllib3 import HTTPResponse
 
 from main.forms import ProductForm
 from main.models import Product
@@ -121,9 +123,11 @@ def show_json_by_id(request, id):
 @csrf_exempt
 @require_POST
 def create_product_ajax(request):
-    name = request.POST.get("name")
-    price = request.POST.get("price")
-    description = request.POST.get("description")
+    name = strip_tags(request.POST.get("name"))
+    price = strip_tags(request.POST.get("price"))
+    description = strip_tags(request.POST.get("description"))
+    if not name or not description:
+        return HttpResponse("HTML tags are not allowed in name or description.", status=400)
     user = request.user
     new_mood = Product(name=name, price=price, description=description, user=user)
     new_mood.save()

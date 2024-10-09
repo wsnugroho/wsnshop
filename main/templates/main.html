@@ -51,10 +51,10 @@
         </div>
         <div class="flex my-4">
             <a href="{% url 'main:create_product' %}" class="bg-blue-800 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mx-4 ">
-                Add New Mood Entry
+                Add Product
             </a>
             <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
-              Add New Mood Entry by AJAX
+              Add Product by AJAX
             </button>
         </div>  
     </section>
@@ -64,14 +64,14 @@
             return fetch("{% url 'main:show_json' %}").then((res) => res.json())
         }
 
-        async function refreshMoodEntries() {
+        async function refreshProduct() {
             document.getElementById("product_cards").innerHTML = "";
             document.getElementById("product_cards").className = "";
-            const moodEntries = await getMoodEntries();
+            const products = await getMoodEntries();
             let htmlString = "";
             let classNameString = "";
 
-            if (moodEntries.length === 0) {
+            if (products.length === 0) {
                 classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
                 htmlString = `
                     <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
@@ -82,7 +82,7 @@
             }
             else {
                 classNameString = "w-full grid gap-4 my-12 sm:grid-cols-2 md:grid-cols-4"
-                moodEntries.forEach((item) => {
+                products.forEach((item) => {
                     const name = DOMPurify.sanitize(item.fields.name);
                     const description = DOMPurify.sanitize(item.fields.description);
                     htmlString += `
@@ -135,7 +135,7 @@
             document.getElementById("product_cards").className = classNameString;
             document.getElementById("product_cards").innerHTML = htmlString;
         }
-        refreshMoodEntries();
+        refreshProduct();
 
         const modal = document.getElementById('crudModal');
         const modalContent = document.getElementById('crudModalContent');
@@ -162,7 +162,6 @@
                 modal.classList.add('hidden');
             }, 150); 
         }
-
         
         document.getElementById("cancelButton").addEventListener("click", hideModal);
         document.getElementById("closeModalBtn").addEventListener("click", hideModal);
@@ -174,7 +173,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    refreshMoodEntries();
+                    refreshProduct();
                     document.getElementById("productForm").reset(); 
                     document.querySelector("[data-modal-toggle='crudModal']").click();
                     hideModal();

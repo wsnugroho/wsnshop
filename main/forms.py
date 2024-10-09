@@ -10,9 +10,9 @@ class ProductForm(ModelForm):
         fields = ["name", "price", "description"]
 
     def clean_name(self):
-        mood = self.cleaned_data["name"]
-        return strip_tags(mood)
+        name = self.cleaned_data["name"]
+        return strip_tags(name)
 
     def clean_description(self):
-        feelings = self.cleaned_data["description"]
-        return strip_tags(feelings)
+        description = self.cleaned_data["description"]
+        return strip_tags(description)

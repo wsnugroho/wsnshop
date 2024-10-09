@@ -21,9 +21,150 @@ Melakukan pembersihan data input hanya di sisi frontend tidaklah cukup, karena u
 
 ### Cara Implementasi Proyek
 
-1. 
+1. Membuat fungsi untuk menghandle tambah produk menggunakan AJAX di `views.py`. Setelah itu, lakukan juga routing fungsi tersebut di `urls.py`.
+    ```python
+    @csrf_exempt
+    @require_POST
+    def create_product_ajax(request):
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        user = request.user
+        new_mood = Product(name=name, price=price, description=description, user=user)
+        new_mood.save()
+        return HttpResponse(b"CREATED", status=201)
+    ```
+    ```python
+    urlpatterns = [
+        path("create-product-ajax/", create_product_ajax, name="create_product_ajax"),
+    ]
+    ```
+2. Mengubah metode menampilkan data menggunakan AJAX. Pertama, Kita lakukan GET request ke endpoint `/json` untuk mendapatkan seluruh data user yang login saat ini. Lalu, lakukan binding suatu elemen HTML dengan menggunakan `document.getElementById()` yang nantinya akan digunakan untuk menampung tampilan (dalam bentuk cards atau kosong) dari hasil response JSON.
+    ```javascript
+    <script>
+        async function getMoodEntries(){
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+        }
+        async function refreshMoodEntries() {
+            document.getElementById("product_cards").innerHTML = "";
+            document.getElementById("product_cards").className = "";
+            const moodEntries = await getMoodEntries();
+            let htmlString = "";
+            let classNameString = "";
 
+            if (moodEntries.length === 0) {
+                classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+                htmlString = `
+                    <!-- HTML dari tampilan kosong -->
+                `;
+            }
+            else {
+                classNameString = "w-full grid gap-4 my-12 sm:grid-cols-2 md:grid-cols-4"
+                moodEntries.forEach((item) => {
+                    htmlString += `
+                        <!-- HTML dari tampilan card-card -->
+                    `;
+                });
+            }
+            document.getElementById("mood_entry_cards").className = classNameString;
+            document.getElementById("mood_entry_cards").innerHTML = htmlString;
+        }
+        refreshMoodEntries();
+    </script>
+    ```
+3. Menambahkan modal sebagai form untuk membuat produk menggunakan AJAX dan menampilkannya hanya ketika button Tambah Produk by AJAX diklik.
+    ```javascript
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
 
+    function showModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modal.classList.remove('hidden'); 
+        setTimeout(() => {
+            modalContent.classList.remove('opacity-0', 'scale-95');
+            modalContent.classList.add('opacity-100', 'scale-100');
+        }, 50); 
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 150); 
+    }
+    
+    document.getElementById("cancelButton").addEventListener("click", hideModal);
+    document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+
+    ```
+4. Melakukan POST request dari client untuk menambahkan data produk.
+    ```javascript
+    function addProduct() {
+        fetch("{% url 'main:create_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#productForm')),
+        })
+        .then(response => {
+            if (response.ok) {
+                refreshProduct();
+                document.getElementById("productForm").reset(); 
+                document.querySelector("[data-modal-toggle='crudModal']").click();
+                hideModal();
+            } else {
+                alert(`Failed to add Product`)
+            }
+        })
+        .catch(err => alert(`An error occured: ${err.message}`))
+    }
+    document.getElementById("productForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        addProduct();
+    })
+
+    ```
+5. Melakukan cleaning input user untuk melindungi aplikasi kita dari XSS
+    ```python
+    def create_product_ajax(request):
+        name = strip_tags(request.POST.get("name"))
+        price = strip_tags(request.POST.get("price"))
+        description = strip_tags(request.POST.get("description"))
+        if not name or not description:
+            return HttpResponse("HTML tags are not allowed in name or description.", status=400)
+        ...
+    ```
+    ```python
+    class ProductForm(ModelForm):
+        ...
+        def clean_name(self):
+            name = self.cleaned_data["name"]
+            return strip_tags(name)
+
+        def clean_description(self):
+            description = self.cleaned_data["description"]
+            return strip_tags(description)
+
+    ```
+    ```javascript
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+    <script>
+        async function refreshProduct() {
+            ...
+            products.forEach((item) => {
+                const name = DOMPurify.sanitize(item.fields.name);
+                const description = DOMPurify.sanitize(item.fields.description);
+                ...
+            });
+            ...
+        }
+    </script>
+    ```
 
 ## Tugas 5
 

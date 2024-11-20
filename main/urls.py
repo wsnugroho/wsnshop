@@ -3,6 +3,7 @@ from django.urls import path
 from main.views import (
     create_product,
     create_product_ajax,
+    create_product_flutter,
     delete_product,
     edit_product,
     login_user,
@@ -30,4 +31,6 @@ urlpatterns = [
     path("json/", show_json, name="show_json"),
     path("json/<str:id>/", show_json_by_id, name="show_json_by_id"),
     path("create-product-ajax/", create_product_ajax, name="create_product_ajax"),
+    # Flutter
+    path('create-flutter/', create_product_flutter, name='create_product_flutter'),
 ]
